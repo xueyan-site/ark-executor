@@ -2,15 +2,21 @@
   "name": "xueyan-react-executor",
   "version": "1.0.0",
   "author": "xueyan-site <yang@xueyan.site>",
-  "license": "MIT",
-  "description": "react package",
+  "license": "LGPL-3.0",
+  "description": "react component executor",
   "main": "dist/node",
   "types": "dist/def",
   "module": "dist/web",
-  "keywords": [],
+  "keywords": [
+    "executor",
+    "react",
+    "xueyan",
+    "component",
+    "typescript"
+  ],
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "https://github.com/xueyan-site/xueyan-react-executor.git"
   },
   "files": [
     "dist/**/*"
@@ -20,19 +26,20 @@
     "build": "xt build"
   },
   "dependencies": {
-    "@babel/runtime": "^7.12.0"
+    "@babel/runtime": "^7.12.0",
+    "xueyan-react-transition": "^1.0.2"
   },
   "peerDependencies": {
     "classnames": "^2.3.0",
-    "lodash": "^4.14.0",
-    "react": ">=16.8.0"
+    "react": ">=16.8.0",
+    "react-dom": ">=16.8.0"
   },
   "devDependencies": {
-    "@types/lodash": "^4.14.0",
     "@types/react": ">=16.8.0",
+    "@types/react-dom": ">=16.8.0",
     "classnames": "^2.3.0",
-    "lodash": "^4.14.0",
     "react": ">=16.8.0",
+    "react-dom": ">=16.8.0",
     "typescript": "^4.0.0"
   }
 }
