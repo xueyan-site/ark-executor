@@ -1,5 +1,9 @@
 # xueyan-react-executor
 
+React component executor
+
+## Document
+
 Please see <https://xueyan.site/xueyan-react-executor>.
 
 ## Develop
@@ -8,5 +12,5 @@ Please make sure that `Node` and `NPM` are installed on your computer, and `xuey
 
 ## Appendix
 
-author - xueyan-site <yang@xueyan.site>  
-builder - [xueyan-typescript-cli](https://github.com/xueyan-site/xueyan-typescript-cli)  
+Author: xueyan-site <xueyan@xueyan.site>  
+Builder: [xueyan-typescript-cli](https://github.com/xueyan-site/xueyan-typescript-cli)  
