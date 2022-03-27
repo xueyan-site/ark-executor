@@ -1,22 +1,22 @@
 import React, { useState } from 'react'
 import { unmountComponentAtNode, render } from 'react-dom'
 
-export type ExecutedComponentCloseMethod = (
-  closeDelay?: number
+export type CloseExecutor = (
+  delayClose?: number
 ) => void
 
-export type ExecutedComponentProps<T extends object> = T & {
-  close: ExecutedComponentCloseMethod
+export type ExecutedProps<T extends object> = T & {
+  close: CloseExecutor
 }
 
-export type ComponentExecutor<T extends object> = (
+export type Executor<T extends object> = (
   props: T
-) => ExecutedComponentCloseMethod
+) => CloseExecutor
 
 export function createExecutor<T extends object = {}>(
-  Component: React.ComponentType<ExecutedComponentProps<T>>,
-  closeDelay?: number
-): ComponentExecutor<T> {
+  Component: React.ComponentType<ExecutedProps<T>>,
+  delayClose?: number
+): Executor<T> {
   return props => {
     let __setVisible__: React.Dispatch<React.SetStateAction<boolean>> | undefined
     const dom = document.createElement('div')
@@ -28,8 +28,8 @@ export function createExecutor<T extends object = {}>(
         dom.parentNode.removeChild(dom)
       }
     }
-    const close = (closeDelay2?: number) => {
-      const delay = closeDelay || closeDelay2
+    const close = (_delayClose?: number) => {
+      const delay = (_delayClose && _delayClose > 0) ? _delayClose : delayClose
       if (__setVisible__ && delay) {
         __setVisible__(false)
         setTimeout(distroy, delay)

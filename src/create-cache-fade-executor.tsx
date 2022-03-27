@@ -3,28 +3,26 @@ import { unmountComponentAtNode, render } from 'react-dom'
 import { FadeTransition } from 'xueyan-react-transition'
 import type { FadeTransitionProps } from 'xueyan-react-transition'
 
-export type CacheFadeExecutedComponentCloseMethod = (
+export type CloseCacheFadeExecutor = (
   unmount?: boolean
 ) => void
 
-export type CacheFadeExecutedComponentProps<T extends object> = T & {
-  close: CacheFadeExecutedComponentCloseMethod
+export type CacheFadeExecutedProps<T extends object> = T & {
+  close: CloseCacheFadeExecutor
 }
 
-export type CacheFadeWrapperComponentProps = Omit<FadeTransitionProps, 'value' | 'onAfter'>
-
-export type CacheFadeComponentExecutor<T extends object> = (
+export type CacheFadeExecutor<T extends object> = (
   props: T,
-  fadeProps?: CacheFadeWrapperComponentProps,
-  isRefresh?: boolean
-) => CacheFadeExecutedComponentCloseMethod
+  refresh?: boolean
+) => CloseCacheFadeExecutor
 
 export function createCacheFadeExecutor<T extends object = {}>(
-  Component: React.ComponentType<CacheFadeExecutedComponentProps<T>>
-): CacheFadeComponentExecutor<T> {
+  Component: React.ComponentType<CacheFadeExecutedProps<T>>,
+  transition?: FadeTransitionProps,
+  containerProps?: React.HTMLAttributes<HTMLDivElement>
+): CacheFadeExecutor<T> {
   let __dom__: HTMLDivElement | undefined
   let __props__: T
-  let __fadeProps__: CacheFadeWrapperComponentProps | undefined
   let __setVisible__: React.Dispatch<React.SetStateAction<boolean|undefined>> | undefined
   let __callback__: (() => void) | undefined
   let __unmount__: (() => void) | undefined
@@ -39,7 +37,6 @@ export function createCacheFadeExecutor<T extends object = {}>(
       __callback__()
     }
     __dom__ = undefined
-    __fadeProps__ = undefined
     __setVisible__ = undefined
     __callback__ = undefined
     __unmount__ = undefined
@@ -58,7 +55,7 @@ export function createCacheFadeExecutor<T extends object = {}>(
     __setVisible__ = setVisible
     return (
       <FadeTransition 
-        {...__fadeProps__}
+        {...transition}
         value={visible}
         onAfter={enter => {
           if (!enter && __unmount__) {
@@ -67,7 +64,7 @@ export function createCacheFadeExecutor<T extends object = {}>(
           }
         }}
       >
-        <div>
+        <div {...containerProps}>
           <Component {...__props__} close={close}/>
         </div>
       </FadeTransition>
@@ -88,10 +85,9 @@ export function createCacheFadeExecutor<T extends object = {}>(
     }
   }
   /** 返回调用 */
-  return (props, fadeProps, isRefresh) => {
+  return (props, refresh) => {
     __props__ = props
-    __fadeProps__ = fadeProps
-    if (__dom__ && !isRefresh && __setVisible__) {
+    if (__dom__ && !refresh && __setVisible__) {
       __setVisible__(true)
     } else {
       mount()

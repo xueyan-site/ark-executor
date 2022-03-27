@@ -4,24 +4,22 @@ export { createCacheExecutor } from './create-cache-executor'
 export { createCacheFadeExecutor } from './create-cache-fade-executor'
 
 export type { 
-  ExecutedComponentCloseMethod, 
-  ExecutedComponentProps, 
-  ComponentExecutor 
+  CloseExecutor, 
+  ExecutedProps, 
+  Executor 
 } from './create-executor'
 export type {
-  FadeExecutedComponentCloseMethod,
-  FadeExecutedComponentProps,
-  FadeWrapperComponentProps,
-  FadeComponentExecutor
+  CloseFadeExecutor,
+  FadeExecutedProps,
+  FadeExecutor
 } from './create-fade-executor'
 export type {
-  CacheExecutedComponentCloseMethod,
-  CacheExecutedComponentProps,
-  CacheComponentExecutor
+  CloseCacheExecutor,
+  CacheExecutedProps,
+  CacheExecutor
 } from './create-cache-executor'
 export type {
-  CacheFadeExecutedComponentCloseMethod,
-  CacheFadeExecutedComponentProps,
-  CacheFadeWrapperComponentProps,
-  CacheFadeComponentExecutor
+  CloseCacheFadeExecutor,
+  CacheFadeExecutedProps,
+  CacheFadeExecutor
 } from './create-cache-fade-executor'

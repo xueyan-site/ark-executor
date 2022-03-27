@@ -1,6 +1,6 @@
 {
   "name": "xueyan-react-executor",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "xueyan-site <xueyan@xueyan.site>",
   "license": "LGPL-3.0",
   "description": "react component executor",
@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.12.0",
-    "xueyan-react-transition": "^1.0.2"
+    "xueyan-react-transition": "^1.0.5"
   },
   "peerDependencies": {
     "classnames": "^2.3.0",

@@ -3,23 +3,22 @@ import { unmountComponentAtNode, render } from 'react-dom'
 import { FadeTransition } from 'xueyan-react-transition'
 import type { FadeTransitionProps } from 'xueyan-react-transition'
 
-export type FadeExecutedComponentCloseMethod = () => void
+export type CloseFadeExecutor = () => void
 
-export type FadeExecutedComponentProps<T extends object> = T & {
-  close: FadeExecutedComponentCloseMethod
+export type FadeExecutedProps<T extends object> = T & {
+  close: CloseFadeExecutor
 }
 
-export type FadeWrapperComponentProps = Omit<FadeTransitionProps, 'value' | 'onAfter'>
-
-export type FadeComponentExecutor<T extends object> = (
-  props: T,
-  fadeProps?: FadeWrapperComponentProps
-) => FadeExecutedComponentCloseMethod
+export type FadeExecutor<T extends object> = (
+  props: T
+) => CloseFadeExecutor
 
 export function createFadeExecutor<T extends object = {}>(
-  Component: React.ComponentType<FadeExecutedComponentProps<T>>
-): FadeComponentExecutor<T> {
-  return (props, fadeProps) => {
+  Component: React.ComponentType<FadeExecutedProps<T>>,
+  transition?: FadeTransitionProps,
+  containerProps?: React.HTMLAttributes<HTMLDivElement>
+): FadeExecutor<T> {
+  return props => {
     let __setVisible__: React.Dispatch<React.SetStateAction<boolean>> | undefined
     const dom = document.createElement('div')
     document.body.appendChild(dom)
@@ -42,7 +41,7 @@ export function createFadeExecutor<T extends object = {}>(
       __setVisible__ = setVisible
       return (
         <FadeTransition 
-          {...fadeProps}
+          {...transition}
           value={visible}
           onAfter={enter => {
             if (!enter) {
@@ -50,7 +49,7 @@ export function createFadeExecutor<T extends object = {}>(
             }
           }}
         >
-          <div>
+          <div {...containerProps}>
             <Component {...props} close={close}/>
           </div>
         </FadeTransition>

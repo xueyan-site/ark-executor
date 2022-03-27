@@ -1,24 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { unmountComponentAtNode, render } from 'react-dom'
 
-export type CacheExecutedComponentCloseMethod = (
+export type CloseCacheExecutor = (
   unmount?: boolean
 ) => void
 
-export type CacheExecutedComponentProps<T extends object> = T & {
-  close: CacheExecutedComponentCloseMethod
+export type CacheExecutedProps<T extends object> = T & {
+  close: CloseCacheExecutor
   visible: boolean
 }
 
-export type CacheComponentExecutor<T extends object> = (
+export type CacheExecutor<T extends object> = (
   props: T,
-  isRefresh?: boolean
-) => CacheExecutedComponentCloseMethod
+  refresh?: boolean
+) => CloseCacheExecutor
 
 export function createCacheExecutor<T extends object = {}>(
-  Component: React.ComponentType<CacheExecutedComponentProps<T>>,
-  closeDelay?: number,
-): CacheComponentExecutor<T> {
+  Component: React.ComponentType<CacheExecutedProps<T>>,
+  delayClose?: number,
+): CacheExecutor<T> {
   let __dom__: HTMLDivElement | undefined
   let __props__: T
   let __timer__: any
@@ -47,7 +47,7 @@ export function createCacheExecutor<T extends object = {}>(
       __setVisible__ = undefined
     }
     if (unmount) {
-      const delay = closeDelay
+      const delay = delayClose
       const call = () => {
         distroy()
         if (callback) {
@@ -82,10 +82,10 @@ export function createCacheExecutor<T extends object = {}>(
     }
   }
   /** 返回调用 */
-  return (props, isRefresh) => {
+  return (props, refresh) => {
     cancelTimer()
     __props__ = props
-    if (__dom__ && !isRefresh && __setVisible__) {
+    if (__dom__ && !refresh && __setVisible__) {
       __setVisible__(true)
     } else {
       mount()

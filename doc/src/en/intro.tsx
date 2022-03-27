@@ -3,6 +3,7 @@ import { createCacheFadeExecutor } from 'xueyan-react-executor'
 
 const style: React.CSSProperties = {
   position: 'fixed',
+  zIndex: 100,
   top: 300,
   left: 100,
   width: 200,
