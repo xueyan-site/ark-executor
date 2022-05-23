@@ -13,38 +13,45 @@ export type CacheExecutedProps<T extends object> = T & {
 export type CacheExecutor<T extends object> = (
   props: T,
   refresh?: boolean
-) => CloseCacheExecutor
+) => {
+  close: CloseCacheExecutor
+  update: (props: T) => void
+}
 
 export function createCacheExecutor<T extends object = {}>(
   Component: React.ComponentType<CacheExecutedProps<T>>,
   delayClose?: number,
 ): CacheExecutor<T> {
-  let __dom__: HTMLDivElement | undefined
-  let __props__: T
-  let __timer__: any
-  let __setVisible__: React.Dispatch<React.SetStateAction<boolean>> | undefined
+  let _dom: HTMLDivElement | undefined
+  let _props: T
+  let _timer: any
+  let _setProps: React.Dispatch<React.SetStateAction<T>> | undefined
+  let _setVisible: React.Dispatch<React.SetStateAction<boolean>> | undefined
+
   const cancelTimer = () => {
-    if (__timer__) {
-      clearTimeout(__timer__)
-      __timer__ = undefined
+    if (_timer) {
+      clearTimeout(_timer)
+      _timer = undefined
     }
   }
+
   const distroy = () => {
     cancelTimer()
-    if (__dom__) {
-      unmountComponentAtNode(__dom__)
-      if (__dom__.parentNode) {
-        __dom__.parentNode.removeChild(__dom__)
+    if (_dom) {
+      unmountComponentAtNode(_dom)
+      if (_dom.parentNode) {
+        _dom.parentNode.removeChild(_dom)
       }
     }
-    __dom__ = undefined
-    __setVisible__ = undefined
+    _dom = undefined
+    _setVisible = undefined
   }
+
   const close = (unmount?: boolean, callback?: () => void) => {
     cancelTimer()
-    if (__setVisible__) {
-      __setVisible__(false)
-      __setVisible__ = undefined
+    if (_setVisible) {
+      _setVisible(false)
+      _setVisible = undefined
     }
     if (unmount) {
       const delay = delayClose
@@ -55,41 +62,49 @@ export function createCacheExecutor<T extends object = {}>(
         }
       }
       if (delay) {
-        __timer__ = setTimeout(call, delay)
+        _timer = setTimeout(call, delay)
       } else {
         call()
       }
     }
   }
-  /** 渲染 */
-  const Wrapper = () => {
-    const [visible, setVisible] = useState<boolean>(false)
-    __setVisible__ = setVisible
-    useEffect(() => setVisible(true), [])
-    return <Component {...__props__} close={close} visible={visible}/>
+
+  const update = (props: T) => {
+    if (_setProps) {
+      _setProps(props)
+    }
   }
-  /** 创建并挂载 */
+
+  const Wrapper = () => {
+    const [props, setProps] = useState(_props)
+    const [visible, setVisible] = useState(true)
+    _setProps = setProps
+    _setVisible = setVisible
+    useEffect(() => setVisible(true), [])
+    return <Component {...props} close={close} visible={visible}/>
+  }
+
   const mount = () => {
     const call = () => {
-      __dom__ = document.createElement('div')
-      document.body.appendChild(__dom__)
-      render(<Wrapper />, __dom__)
+      _dom = document.createElement('div')
+      document.body.appendChild(_dom)
+      render(<Wrapper />, _dom)
     }
-    if (!__dom__) {
+    if (!_dom) {
       call()
     } else {
       close(true, call)
     }
   }
-  /** 返回调用 */
+
   return (props, refresh) => {
     cancelTimer()
-    __props__ = props
-    if (__dom__ && !refresh && __setVisible__) {
-      __setVisible__(true)
+    _props = props
+    if (_dom && !refresh && _setVisible) {
+      _setVisible(true)
     } else {
       mount()
     }
-    return close
+    return { close, update }
   }
 }

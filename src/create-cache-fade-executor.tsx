@@ -14,84 +14,98 @@ export type CacheFadeExecutedProps<T extends object> = T & {
 export type CacheFadeExecutor<T extends object> = (
   props: T,
   refresh?: boolean
-) => CloseCacheFadeExecutor
+) => {
+  close: CloseCacheFadeExecutor
+  update: (props: T) => void
+}
 
 export function createCacheFadeExecutor<T extends object = {}>(
   Component: React.ComponentType<CacheFadeExecutedProps<T>>,
   transition?: FadeTransitionProps,
   containerProps?: React.HTMLAttributes<HTMLDivElement>
 ): CacheFadeExecutor<T> {
-  let __dom__: HTMLDivElement | undefined
-  let __props__: T
-  let __setVisible__: React.Dispatch<React.SetStateAction<boolean|undefined>> | undefined
-  let __callback__: (() => void) | undefined
-  let __unmount__: (() => void) | undefined
+  let _dom: HTMLDivElement | undefined
+  let _props: T
+  let _setProps: React.Dispatch<React.SetStateAction<T>> | undefined
+  let _setVisible: React.Dispatch<React.SetStateAction<boolean>> | undefined
+  let _callback: (() => void) | undefined
+  let _unmount: (() => void) | undefined
+
   const distroy = () => {
-    if (__dom__) {
-      unmountComponentAtNode(__dom__)
-      if (__dom__.parentNode) {
-        __dom__.parentNode.removeChild(__dom__)
+    if (_dom) {
+      unmountComponentAtNode(_dom)
+      if (_dom.parentNode) {
+        _dom.parentNode.removeChild(_dom)
       }
     }
-    if (__callback__) {
-      __callback__()
+    if (_callback) {
+      _callback()
     }
-    __dom__ = undefined
-    __setVisible__ = undefined
-    __callback__ = undefined
-    __unmount__ = undefined
+    _dom = undefined
+    _setVisible = undefined
+    _callback = undefined
+    _unmount = undefined
   }
+
   const close = (unmount?: boolean) => {
-    if (__setVisible__) {
-      __setVisible__(false)
+    if (_setVisible) {
+      _setVisible(false)
     }
     if (unmount) {
-      __unmount__ = distroy
+      _unmount = distroy
     }
   }
-  /** 渲染 */
+
+  const update = (props: T) => {
+    if (_setProps) {
+      _setProps(props)
+    }
+  }
+
   const Wrapper = () => {
-    const [visible, setVisible] = useState<boolean|undefined>(true)
-    __setVisible__ = setVisible
+    const [props, setProps] = useState(_props)
+    const [visible, setVisible] = useState(true)
+    _setProps = setProps
+    _setVisible = setVisible
     return (
       <FadeTransition 
         {...transition}
         value={visible}
         onAfter={enter => {
-          if (!enter && __unmount__) {
-            __unmount__()
-            __unmount__ = undefined
+          if (!enter && _unmount) {
+            _unmount()
+            _unmount = undefined
           }
         }}
       >
         <div {...containerProps}>
-          <Component {...__props__} close={close}/>
+          <Component {...props} close={close}/>
         </div>
       </FadeTransition>
     )
   }
-  /** 创建并挂载 */
+
   const mount = () => {
     const call = () => {
-      __dom__ = document.createElement('div')
-      document.body.appendChild(__dom__)
-      render(<Wrapper />, __dom__)
+      _dom = document.createElement('div')
+      document.body.appendChild(_dom)
+      render(<Wrapper />, _dom)
     }
-    if (!__dom__) {
+    if (!_dom) {
       call()
     } else {
       close(true)
-      __callback__ = call
+      _callback = call
     }
   }
-  /** 返回调用 */
+
   return (props, refresh) => {
-    __props__ = props
-    if (__dom__ && !refresh && __setVisible__) {
-      __setVisible__(true)
+    _props = props
+    if (_dom && !refresh && _setVisible) {
+      _setVisible(true)
     } else {
       mount()
     }
-    return close
+    return { close, update }
   }
 }
