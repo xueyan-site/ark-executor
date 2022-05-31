@@ -11,12 +11,16 @@ type createCacheExecutor<T extends object = {}> = (
   Component: React.ComponentType<CacheExecutedProps<T>> // 要执行的组件
   delayClose?: number                                   // 调用关闭方法后，推迟的时间，单位（ms）
 ) => CacheExecutor<T>
+\`\`\`
 
+\`\`\`
 type CacheExecutedProps<T extends object> = T & {
   close: CloseCacheExecutor         // 关闭方法
   visible: boolean                  // 是否可见
 }
+\`\`\`
 
+\`\`\`
 type CacheExecutor<T extends object> = (
   props: T,                         // 组件的参数
   refresh?: boolean                 // 是否刷新（卸载原组件后，重新挂载）
@@ -24,7 +28,9 @@ type CacheExecutor<T extends object> = (
   close: CloseCacheExecutor         // 关闭方法
   update: (props: T) => void        // 更新props
 }
+\`\`\`
 
+\`\`\`
 type CloseCacheExecutor = (
   unmount?: boolean                 // 关闭时，是否卸载组件
 ) => void

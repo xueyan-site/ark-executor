@@ -15,18 +15,24 @@ type createFadeExecutor<T extends object = {}> = (
   transition?: FadeTransitionProps,                     // 过渡参数
   containerProps?: React.HTMLAttributes<HTMLDivElement> // 过渡节点的属性
 ) => FadeExecutor<T> 
+\`\`\`
 
+\`\`\`
 type FadeExecutor<T extends object> = (
   props: T                         // 组件的参数
 ) => {
   close: CloseFadeExecutor         // 关闭方法
   update: (props: T) => void       // 更新props
 }
+\`\`\`
 
+\`\`\`
 type FadeExecutedProps<T extends object> = T & {
   close: CloseFadeExecutor         // 关闭方法
 }
+\`\`\`
 
+\`\`\`
 type CloseFadeExecutor = () => void
 \`\`\`
 

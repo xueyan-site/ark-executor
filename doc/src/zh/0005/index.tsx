@@ -15,7 +15,9 @@ type createCacheFadeExecutor<T extends object = {}> = (
   transition?: FadeTransitionProps,                           // 过渡参数
   containerProps?: React.HTMLAttributes<HTMLDivElement>       // 过渡节点的属性
 ) => CacheFadeExecutor<T>
+\`\`\`
 
+\`\`\`
 type CacheFadeExecutor<T extends object> = (
   props: T,                   // 组件的参数
   refresh?: boolean           // 是否刷新（卸载原组件后，重新挂载）
@@ -23,11 +25,15 @@ type CacheFadeExecutor<T extends object> = (
   close: CloseCacheFadeExecutor   // 关闭方法
   update: (props: T) => void      // 更新props
 }
+\`\`\`
 
+\`\`\`
 type CacheFadeExecutedProps<T extends object> = T & {
   close: CloseCacheFadeExecutor   // 关闭方法
 }
+\`\`\`
 
+\`\`\`
 type CloseCacheFadeExecutor = (
   unmount?: boolean               // 关闭时，是否卸载组件
 ) => void
