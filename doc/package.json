@@ -1,8 +1,8 @@
 {
-  "name": "xueyan-react-executor-doc",
+  "name": "ark-executor-doc",
   "version": "1.0.0",
   "author": "xueyan-site <xueyan@xueyan.site>",
-  "description": "xueyan-react-executor document",
+  "description": "ark-executor document",
   "private": true,
   "scripts": {
     "start": "xt start",

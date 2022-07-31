@@ -1,9 +1,9 @@
 {
-  "name": "xueyan-react-executor",
-  "version": "1.1.0",
+  "name": "ark-executor",
+  "version": "1.0.0",
   "author": "xueyan-site <xueyan@xueyan.site>",
   "license": "LGPL-3.0",
-  "description": "react component executor",
+  "description": "Component executor in a react kit",
   "main": "dist/node",
   "types": "dist/def",
   "module": "dist/web",
@@ -16,18 +16,18 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/xueyan-site/xueyan-react-executor.git"
+    "url": "https://github.com/xueyan-site/ark-executor.git"
   },
   "files": [
     "dist/**/*"
   ],
   "scripts": {
-    "start": "xt start",
-    "build": "xt build"
+    "dev": "sdin dev",
+    "build": "sdin build"
   },
   "dependencies": {
     "@babel/runtime": "^7.12.0",
-    "xueyan-react-transition": "^1.0.8"
+    "ark-transition": "^1.0.0"
   },
   "peerDependencies": {
     "classnames": "^2.3.0",

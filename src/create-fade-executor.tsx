@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { unmountComponentAtNode, render } from 'react-dom'
-import { FadeTransition } from 'xueyan-react-transition'
-import type { FadeTransitionProps } from 'xueyan-react-transition'
+import { FadeTransition } from 'ark-transition'
+import type { FadeTransitionProps } from 'ark-transition'
 
 export type CloseFadeExecutor = () => void
 
