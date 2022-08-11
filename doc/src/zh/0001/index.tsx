@@ -1,5 +1,5 @@
 import React from 'react'
-import { Article, Segment } from 'xueyan-react-markdown'
+import { Article, Segment } from 'ark-markdown'
 
 const MARK1 = `
 以调用函数的方式渲染组件
@@ -44,7 +44,7 @@ try {
 
 它的工作方式，限制了节点只能渲染在 document.body 节点下，不能指定其他位置。
 
-如果需要挂载在其他位置，我们推荐你使用 [xueyan-react-portal](/xueyan-react-portal) 去实现。
+如果需要挂载在其他位置，我们推荐你使用 [ark-portal](/ark-portal) 去实现。
 `
 
 export default function Main() {

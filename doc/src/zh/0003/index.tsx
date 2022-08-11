@@ -1,5 +1,5 @@
 import React from 'react'
-import { Article, Segment } from 'xueyan-react-markdown'
+import { Article, Segment } from 'ark-markdown'
 
 const MARK1 = `
 创建附带有渐变效果的执行器。
@@ -7,7 +7,7 @@ const MARK1 = `
 当组件被渲染和卸载时，会有淡入淡出的动画效果。
 
 > 过渡节点：为了完成过渡，执行器会在节点外层包裹一个div。  
-> 过渡参数：[xueyan-react-transition](/xueyan-react-transition)  
+> 过渡参数：[ark-transition](/ark-transition)  
 
 \`\`\`ts
 type createFadeExecutor<T extends object = {}> = (
